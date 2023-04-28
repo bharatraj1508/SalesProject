@@ -1,0 +1,79 @@
+ {{!-- <h3>Search Criteria</h3>
+<form method="post" action="/api/search">
+  <div class="form-group">
+    <label for="page">Page:</label>
+    <input type="text" class="form-control" id="page" name="page">
+  </div>
+  <div class="form-group">
+    <label for="perPage">Items per page:</label>
+    <input type="text" class="form-control" id="perPage" name="perPage">
+  </div>
+  <div class="form-group">
+    <label for="storeLocation">Store location:</label>
+    <input type="text" class="form-control" id="storeLocation"
+      name="storeLocation">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form> --}}
+
+
+<h3>Search Criteria</h3>
+<form method="post" action="/api/search">
+  <div class="form-group">
+    <label for="page">Page:</label>
+    <input type="text" class="form-control" id="page" name="page">
+  </div>
+  <div class="form-group">
+    <label for="perPage">Items per page:</label>
+    <input type="text" class="form-control" id="perPage" name="perPage">
+  </div>
+  <div class="form-group">
+    <label for="storeLocation">Store location:</label>
+    <input type="text" class="form-control" id="storeLocation"
+      name="storeLocation">
+  </div>
+  <div class="form-group">
+    <label for="key">API Key:</label>
+    <input type="text" class="form-control" id="key" name="key">
+  </div>
+  <button type="submit" onclick="accessResource(event)" class="btn btn-primary">Submit</button>
+</form>
+<script>
+async function accessResource(event) {
+  event.preventDefault();
+  console.log('start')
+  const body ={
+    page:document.getElementById('page').value,
+    perPage:document.getElementById('perPage').value,
+    storeLocation:document.getElementById('storeLocation').value,
+  } 
+  try {
+    console.log('Fetching');
+    response = await fetch('/api/search', {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers:{
+      'Content-Type':'application/json',
+      'API-Key': document.getElementById('key').value
+    }
+    }).then(response => {
+          if (response.ok) {
+            return response.text();
+          }
+          throw new Error('Network response was not ok.');
+        })
+    .then(html => {
+    // Handle the HTML content here
+   document.documentElement.innerHTML = html;
+  }).catch(error => {
+    // Handle errors here
+  });;
+   
+  }
+   catch (error) {
+    alert('Oops! Something went wrong');
+  }
+
+
+}
+</script>
